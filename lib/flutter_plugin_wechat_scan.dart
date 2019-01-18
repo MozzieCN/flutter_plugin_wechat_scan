@@ -11,8 +11,18 @@ class FlutterPluginWechatScan {
     return version;
   }
 
-  static Future<String> scan({Map<String, dynamic> params}) async {
-    Map<String,dynamic> m = Map();
+  static Future<String> scan({
+    String title,
+    String tipText,
+  }) async {
+    Map<String, dynamic> m = Map();
+    if (title != null) {
+      m['title'] = title;
+    }
+    if (tipText != null) {
+      m['tipText'] = tipText;
+    }
+    print('mmmm=>  $m, $title, $tipText');
     final String result = await _channel.invokeMethod('scan', m);
     return result;
   }

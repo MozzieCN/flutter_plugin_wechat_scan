@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
+import android.util.Log;
 
 import java.util.Map;
 
@@ -30,7 +31,7 @@ public class FlutterPluginWechatScanPlugin implements MethodCallHandler, PluginR
     Map<String, Object> arguments;
     private int REQUEST_CODE_CAMERA_PERMISSION = 73722;
     private int REQUEST_CODE_SCAN_ACTIVITY = 73721;
-
+    private final String TAG = FlutterPluginWechatScanPlugin.class.getSimpleName();
     public FlutterPluginWechatScanPlugin(FlutterActivity activity) {
         this.activity = activity;
     }
@@ -81,7 +82,11 @@ public class FlutterPluginWechatScanPlugin implements MethodCallHandler, PluginR
     }
 
     private void startActivity() {
+        Log.i(TAG, String.valueOf(arguments));
         Intent intent = new Intent(activity, FlutterWechatScanActivity.class);
+        if (arguments != null) {
+             intent.putExtra(FlutterWechatScanActivity.KEY_TITLE, (String)arguments.get("title"));
+        }
         activity.startActivityForResult(intent, REQUEST_CODE_SCAN_ACTIVITY);
     }
 

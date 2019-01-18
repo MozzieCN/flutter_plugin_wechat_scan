@@ -1,21 +1,24 @@
 package me.starainx.flutterpluginwechatscan;
 
+
+import android.graphics.Bitmap;
 import android.hardware.Camera;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.Toolbar;
 
 import com.google.zxing.Result;
 import com.king.zxing.CaptureActivity;
-
-import android.graphics.Bitmap;
-
+import com.king.zxing.ViewfinderView;
 
 public class FlutterWechatScanActivity extends CaptureActivity {
 
-    public final static String  KEY_TITLE = "__key";
+    public final static String  KEY_TITLE = "__title";
+
+    public final static String  KEY_TIP_TEXT = "__tip_text";
+
+    public final static String  KEY_ALLOW_ZOOM = "__allow_zoom";
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,13 +26,31 @@ public class FlutterWechatScanActivity extends CaptureActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
 //        StatusBarUtils.immersiveStatusBar(this,toolbar,0.2f);
         TextView tvTitle = findViewById(R.id.tvTitle);
-        tvTitle.setText("二维码扫码");
+
+        String title = "二维码扫描";
+        boolean allowZoom = getIntent().getBooleanExtra(KEY_ALLOW_ZOOM,true);
+
+        if (getIntent() != null) {
+            String argTitle = getIntent().getStringExtra(KEY_TITLE);
+            if (argTitle != null) {
+                title = argTitle;
+            }
+
+        }
+        tvTitle.setText(title);
+        setZoom(allowZoom);
         // tvTitle.setText(getIntent().getStringExtra(KEY_TITLE));
 
         // isContinuousScan = getIntent().getBooleanExtra(MainActivity.KEY_IS_CONTINUOUS,false);
 
         getBeepManager().setPlayBeep(true);
         getBeepManager().setVibrate(true);
+
+        ViewfinderView viewFinder = findViewById(getViewFinderViewId());
+        String tipText = getIntent().getStringExtra(KEY_TIP_TEXT);
+        if (tipText != null) {
+            viewFinder.setLabelText(tipText);
+        }
 //        setZoom(fals);
     }
 

@@ -25,7 +25,7 @@ class _MyAppState extends State<MyApp> {
     String platformVersion;
     // Platform messages may fail, so we use a try/catch PlatformException.
     try {
-      platformVersion = await FlutterPluginWechatScan.scan();
+      platformVersion = await FlutterPluginWechatScan.scan(title:'风险点扫描');
     } on PlatformException catch (e) {
       print(e);
       platformVersion = 'Failed to get platform version.';
@@ -54,7 +54,7 @@ class _MyAppState extends State<MyApp> {
             RaisedButton(
               child: Text('点我'),
               onPressed: () {
-              FlutterPluginWechatScan.scan()
+              FlutterPluginWechatScan.scan(title: '风险点扫描')
                   .then((d) => print(d))
                   .catchError((e) => print(e));
             })
